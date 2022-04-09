@@ -15,14 +15,18 @@ khpql.SCORE=60
 
 # now time to determine what to do.
 lines1 = khpql.prepare_buffer_from_file(sys.argv[1]) # these read paragraphs without deviding paragraphs at all
-# lines2 = khpql.prepare_buffer_from_file(sys.argv[2])
-# lines1 = khpql.prepare_buffer_from_file_cutting_at_dandas(sys.argv[1])
-# lines2 = khpql.prepare_buffer_from_file_cutting_at_dandas(sys.argv[2])
 
+## a few other possible ways of preparing the buffer whose content is checked against other files
+# lines1 = khpql.prepare_buffer_from_file_cutting_at_dandas(sys.argv[1])
 # be careful not to specify lower than 30!
 # lines1 = khpql.prepare_buffer_from_file_cutting_at_equal_length(sys.argv[1], 50)
-lines2 = khpql.prepare_buffer_from_file_cutting_at_equal_length(sys.argv[2], 500)
 
-# choose what you want to do. The last one needs a string for comparison. So, it has to be used with 
-# compare_lines(lines1, lines2)
-khpql.find_quotes_in_a_text(lines1, lines2)
+for i in sys.argv[2:]: # note that we start from the second argument
+    lines2 = khpql.prepare_buffer_from_file_cutting_at_equal_length(i, 500)
+    # lines2 = khpql.prepare_buffer_from_file(i)
+    # lines2 = khpql.prepare_buffer_from_file_cutting_at_dandas(i)
+    # choose what you want to do. The last one needs a string for comparison. So, it has to be used with 
+    # compare_lines(lines1, lines2)
+    
+    khpql.find_quotes_in_a_text(lines1, lines2)
+    
