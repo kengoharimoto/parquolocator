@@ -23,7 +23,9 @@ ignore_list = ["śrīmatparamahaṃsaparivrājak",
                 "dvitīy.*dhyāy",
                 "\. \. \. \. \. \. \. \.",
                 "^\<[^>]*\>$",
-                "^ *\<rdg.*\<\/rdg\>$"]
+                "^ *\<rdg.*\<\/rdg\>$",
+                "\-\-\{\}\-\-\{\}",
+                " \-\- \-\- \-\-"]
 
 # This is the the cutoff ratio between 0 and 100. 0 is "nothing is shared at all" and 100 is "completely identical." Obviously somewhere in between. Currently it is hard coded but different situations call for different numbers. Eventually this should be specified in the command line. At the moment, the value can be changed from inside the executable script in the form of khpql.SCORE.
 SCORE = 70
@@ -66,7 +68,15 @@ def skip_or_check(a_line):
 # The following function is only useful when comparing a predominatly verse text with another predominantly verse text. It won't find passages where verse lines are quoted in prose, for example. We could make the score_cutoff much smaller but then the script will find lines that are close in length with the subject but will most likely miss a very long line (a paragraph) that contains the verse line in the form of quotation.
 def compare_lines(subject, object):
     i = 0
+    message1 = "{:.2f} "
+    message2 = "{:.2f}\n"
+    howmanylines = len(subject)
     for the_line in subject:
+        progress = i/howmanylines*100
+        if (i % 20 != 0):
+            sys.stderr.write(message1.format(progress))
+        else:
+            sys.stderr.write(message2.format(progress))
         i += 1
         if skip_or_check(the_line):
             continue
