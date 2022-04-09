@@ -27,6 +27,7 @@ for i in sys.argv[2:]: # note that we start from the second argument
     ## a few other means to prepare buffers to check if they contain what we look for
     # lines2 = prepare_buffer_from_file_cutting_at_dandas(i)
     # lines2 = prepare_buffer_from_file_cutting_at_equal_length(i, 200)
+
     ## choose what you want to do. The last one needs a string for comparison. So, it has to be used with 
     khpql.compare_lines(lines1, lines2)
     # find_quotes_in_a_text(lines1, lines2)

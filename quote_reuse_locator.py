@@ -11,7 +11,7 @@ if len(sys.argv) < 3:
     sys.stderr.write("Give me at least two arguments. Thank you!\n")
     sys.exit()
 
-khpql.SCORE=60
+khpql.SCORE=65
 
 # now time to determine what to do.
 lines1 = khpql.prepare_buffer_from_file(sys.argv[1]) # these read paragraphs without deviding paragraphs at all
@@ -25,8 +25,8 @@ for i in sys.argv[2:]: # note that we start from the second argument
     lines2 = khpql.prepare_buffer_from_file_cutting_at_equal_length(i, 500)
     # lines2 = khpql.prepare_buffer_from_file(i)
     # lines2 = khpql.prepare_buffer_from_file_cutting_at_dandas(i)
+    
     # choose what you want to do. The last one needs a string for comparison. So, it has to be used with 
     # compare_lines(lines1, lines2)
-    
     khpql.find_quotes_in_a_text(lines1, lines2)
     
