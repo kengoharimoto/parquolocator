@@ -21,7 +21,6 @@ lines1 = khpql.prepare_buffer_from_file(sys.argv[1]) # these read paragraphs wit
 # lines1 = prepare_buffer_from_file_cutting_at_equal_length(sys.argv[1], 30)
 
 # Now we go through all the remaining argument (files)
-
 for i in sys.argv[2:]: # note that we start from the second argument
     lines2 = khpql.prepare_buffer_from_file(i)
     ## a few other means to prepare buffers to check if they contain what we look for
