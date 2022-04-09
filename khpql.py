@@ -17,19 +17,33 @@ ignore_list = ["śrīmatparamahaṃsaparivrājak",
                 "=====*",
                 "^\%",
                 "paramahaṃsaparivrājakācāry",
-                "pūjyapādaśiṣya"]
+                "pūjyapādaśiṣya",
+                "pratham.*dhyāya",
+                "pratham.*pāda",
+                "dvitīy.*dhyāy",
+                "\. \. \. \. \. \. \. \.",
+                "^\<[^>]*\>$",
+                "^ *\<rdg.*\<\/rdg\>$"]
 
 # This is the the cutoff ratio between 0 and 100. 0 is "nothing is shared at all" and 100 is "completely identical." Obviously somewhere in between. Currently it is hard coded but different situations call for different numbers. Eventually this should be specified in the command line. At the moment, the value can be changed from inside the executable script in the form of khpql.SCORE.
 SCORE = 70
 
+# We skip certain short lines (e.g. len == 0) so that the program does not waste lookign for matches, or they match too many lines. However, sometimes it is good to change the value so that shor phrases can be located.
+SHORTEST_LINE = 30
+
 def prepare_buffer_from_file(file_ref):
+    sentences = []
     with open(file_ref) as f:
-        return f.readlines()
+        while a_line := f.readline():
+            a_line = a_line.replace('\t', "    ")
+            sentences.append(a_line)
+        return sentences
 
 def prepare_buffer_from_file_cutting_at_dandas(file_ref):
     sentences = []
     with open(file_ref) as f:
         while a_line := f.readline():
+            a_line = a_line.replace('\t', "    ")
             sentences.extend(a_line.split("|"))
         return sentences
 
@@ -38,11 +52,12 @@ def prepare_buffer_from_file_cutting_at_equal_length(file_ref, length):
     with open(file_ref) as f:
         the_whole = f.read()
         the_whole = the_whole.replace('\n', "¶")
+        the_whole = the_whole.replace('\t', "    ")
         sentences = [the_whole[i:i+length] for i in range(0, len(the_whole), length)]
         return sentences
 
 def skip_or_check(a_line):
-    if (len(a_line) < 30): # arbitrary length; this should be changeable from command line?
+    if (len(a_line) < SHORTEST_LINE): # arbitrary length; this should be changeable from command line?
         return True # True means that the line is to be skipped
     for pattern in ignore_list:
         if re.search(pattern, a_line):
@@ -64,11 +79,15 @@ def compare_lines(subject, object):
 def find_quotes_in_a_text(subject, object):
     i = 0
     lines = len(subject)
-    message = "{:.2f}% "
+    message1 = "{:.2f} "
+    message2 = "{:.2f}\n"
     for the_line in subject:
         i = i + 1
         progress = i/lines*100
-        # sys.stderr.write(message.format(progress))
+        if (i % 20 != 0):
+            sys.stderr.write(message1.format(progress))
+        else:
+            sys.stderr.write(message2.format(progress))
         if skip_or_check(the_line): continue
         j = 0
         for the_target_line in object:
@@ -90,34 +109,3 @@ def find_quotes_in_a_text(subject, object):
 def calc_distances_of_contents_of_two_files(subject, object):
     result = process.cdist(subject, object, workers=-1)
     print(result)
-
-# Here is me thinking just loudly...
-# let us find a verse (lines) from a certain text quoted in a prose text. In that case, we may expect verse lines are already delimited with new lines in the subject file. Those lines are probably more or less like more than 30 characters and less than 50 characters. Shall we first just try if the line is found in prose paragraphs? By reading a verse text and look for each line in whatever formatted prose text lines/paragraphs, etc.?
-
-# The following is a remanant from the time this file was a standalone script...
-# # So, here is the body --------------------------------------------------------
-#
-# # The script should behave a bit nice
-# # So, it exits without doing anything if not enough arguments are not given
-# if len(sys.argv) < 3:
-#     sys.stderr.write("Give me at least two arguments. Thank you!\n")
-#     sys.exit()
-#
-# # now time to determine what to do.
-# lines1 = prepare_buffer_from_file(sys.argv[1]) # these read paragraphs without deviding paragraphs at all
-# lines2 = prepare_buffer_from_file(sys.argv[2])
-# # lines1 = prepare_buffer_from_file_cutting_at_dandas(sys.argv[1])
-# # lines2 = prepare_buffer_from_file_cutting_at_dandas(sys.argv[2])
-# # lines1 = prepare_buffer_from_file_cutting_at_equal_length(sys.argv[1], 30)
-# # lines2 = prepare_buffer_from_file_cutting_at_equal_length(sys.argv[2], 200)
-#
-# # for the_line in lines1:
-# #     print(the_line)
-#
-#
-# # searchthis = sys.argv[1] # This line was here for experimenting. This read the first argument as the string to search
-#
-# # choose what you want to do. The last one needs a string for comparison. So, it has to be used with
-# compare_lines(lines1, lines2)
-# # calc_distances_of_contents_of_two_files(lines1, lines2)
-# # find_quotes_in_a_text(lines1, lines2)

@@ -5,7 +5,7 @@ import sys
 import re
 import khpql
 
-khpql.SCORE = 90
+khpql.SCORE = 70
 
 # The script should behave a bit nice
 # So, it exits without doing anything if not enough arguments are not given
