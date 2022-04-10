@@ -13,16 +13,19 @@ if len(sys.argv) < 3:
 
 khpql.SCORE=65
 
-# now time to determine what to do.
-lines1 = khpql.prepare_buffer_from_file(sys.argv[1]) # these read paragraphs without deviding paragraphs at all
+## now time to determine what to do
+
+# This reads paragraphs without deviding paragraphs at all. Best suited for verse texts where each line ends with a newline.
+lines1 = khpql.prepare_buffer_from_file(sys.argv[1]) 
 
 ## a few other possible ways of preparing the buffer whose content is checked against other files
 # lines1 = khpql.prepare_buffer_from_file_cutting_at_dandas(sys.argv[1])
+
 # be careful not to specify lower than 30!
 # lines1 = khpql.prepare_buffer_from_file_cutting_at_equal_length(sys.argv[1], 50)
 
 for i in sys.argv[2:]: # note that we start from the second argument
-    lines2 = khpql.prepare_buffer_from_file_cutting_at_equal_length(i, 500)
+    lines2 = khpql.prepare_buffer_from_file_cutting_at_equal_length(i, 1000)
     # lines2 = khpql.prepare_buffer_from_file(i)
     # lines2 = khpql.prepare_buffer_from_file_cutting_at_dandas(i)
     
