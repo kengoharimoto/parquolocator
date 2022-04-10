@@ -6,9 +6,6 @@ from rapidfuzz import process, fuzz, utils
 from rapidfuzz.string_metric import levenshtein, normalized_levenshtein
 from rapidfuzz.fuzz import ratio
 
-lines1 = [] # the whole content of file 1
-lines2 = [] # the whole content of file 2
-
 # Some lines don't even have to be looked at if they are colophons or extremely common phrase that appear everywhere. The following are regular expressions. If they are found in the search buffer, the buffer will be skipped. Perhaps they should eventually be stored in a file and called from the command line.
 ignore_list = ["śrīmatparamahaṃsaparivrājak", 
                 "śiṣyasya śrīmacchaṃkarabhagavat", 
