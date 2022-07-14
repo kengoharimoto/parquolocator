@@ -5,7 +5,7 @@ import sys
 import re
 import khpql
 
-khpql.SCORE = 70 # the cutoff score can be changed here.
+khpql.SCORE = 65 # the cutoff score can be changed here.
 
 # The script should behave a bit nice
 # So, it exits without doing anything if not enough arguments are not given
